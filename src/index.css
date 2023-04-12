@@ -1,4 +1,5 @@
-@import-normalize; /* bring in normalize.css styles */
+@import-normalize;
+/* bring in normalize.css styles */
 
 body {
   margin: 0;
@@ -12,4 +13,34 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+
+a {
+  text-decoration: none;
+}
+
+.nav-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav {
+  padding: 15px 40px;
+  margin-bottom: 15px;
+  -webkit-box-shadow: 1px 3px 5px 2px rgba(34, 60, 80, 0.6);
+  -moz-box-shadow: 1px 3px 5px 2px rgba(34, 60, 80, 0.6);
+  box-shadow: 1px 3px 5px 2px rgba(34, 60, 80, 0.6);
+
+}
+
+.nav-list>li:not(:last-child) {
+  margin-right: 15px;
+}
+
+.movieList>li:not(:last-child) {
+  margin-bottom: 10px;
 }
