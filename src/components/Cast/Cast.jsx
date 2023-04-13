@@ -17,6 +17,7 @@ export const Cast = () => {
       setActors(res.data.cast);
       setStatus('pending');
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === 'idle') {

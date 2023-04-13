@@ -13,6 +13,7 @@ export default function SearchMovie() {
     if (name !== '') {
       setSearchQuery(name);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = e => {

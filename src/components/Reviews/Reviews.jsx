@@ -17,6 +17,7 @@ export default function Reviews() {
       console.log(res.data.results);
       setStatus('pending');
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === 'idle') {
