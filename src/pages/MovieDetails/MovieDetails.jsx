@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useParams, Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,8 +11,10 @@ export default function MovieDetails() {
   const { movieId } = useParams();
   const [status, setStatus] = useState('idle');
   const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/movies';
-  console.log(backLinkHref);
+  const backLinkHref = location.state?.from ?? '/';
+  console.log('backLinkHref', backLinkHref);
+  const refLink = useRef(backLinkHref);
+  console.log('refLink', refLink);
 
   useEffect(() => {
     axios.get(`${baseUrl}${movieId}${KEY_API}`).then(res => {
@@ -23,7 +25,7 @@ export default function MovieDetails() {
 
   return (
     <>
-      <Link to={backLinkHref}>
+      <Link to={refLink.current}>
         <button> {`<`} back</button>
       </Link>
 

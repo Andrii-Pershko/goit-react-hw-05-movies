@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const API_KEY = '85c51028d47d6f3b76fd606d9b7a0314';
 const URL = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`;
 
-export default function MovieItems({ searchQuery, search }) {
+export default function MovieItems({ searchQuery }) {
   const [movies, setMovies] = useState([]);
 
   const location = useLocation();
@@ -16,9 +16,7 @@ export default function MovieItems({ searchQuery, search }) {
       .then(res => setMovies(res.data.results));
   }, [searchQuery]);
 
-  return movies.length === 0 ? (
-    <h1>nothing found </h1>
-  ) : (
+  return (
     <ul>
       {movies.map(movie => (
         <li key={movie.id}>

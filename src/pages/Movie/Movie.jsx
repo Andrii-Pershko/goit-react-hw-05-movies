@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import MovieItems from '../../components/MovieItems';
+const MovieItems = lazy(() => import('../../components/MovieItems'));
 
 export default function SearchMovie() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const name = searchParams.get('name') ?? '';
+  let name = searchParams.get('name') ?? '';
 
   useEffect(() => {
-    setSearchQuery('');
+    console.log(searchQuery);
     if (name !== '') {
       setSearchQuery(name);
     }
@@ -36,10 +36,11 @@ export default function SearchMovie() {
           onChange={e => setSearchParams({ name: e.target.value })}
         />
       </form>
-
-      {searchQuery ? (
-        <MovieItems searchQuery={searchQuery} search={searchParams} />
-      ) : null}
+      <Suspense fallback={<div>Loading...</div>}>
+        {searchQuery ? (
+          <MovieItems searchQuery={searchQuery} search={searchParams} />
+        ) : null}
+      </Suspense>
     </>
   );
 }
