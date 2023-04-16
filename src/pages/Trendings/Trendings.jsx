@@ -7,7 +7,6 @@ const baseURL = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_K
 
 export default function Trendings() {
   const [movieList, setMovieList] = useState([]);
-
   const location = useLocation();
 
   useEffect(() => {
@@ -15,7 +14,9 @@ export default function Trendings() {
       axios
         .get(baseURL)
         .then(dataMovies => setMovieList(dataMovies.data.results));
-    } catch {}
+    } catch {
+      alert('Unknown error');
+    }
   }, []);
 
   return (

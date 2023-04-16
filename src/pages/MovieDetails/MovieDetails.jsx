@@ -1,40 +1,51 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useParams, Outlet, useLocation } from 'react-router-dom';
+import { baseUrl, optionMovieDetails, baseImgURL } from 'URLs';
 import axios from 'axios';
 
-const KEY_API = `?api_key=85c51028d47d6f3b76fd606d9b7a0314&language=en-US`;
-const baseUrl = 'https://api.themoviedb.org/3/movie/';
-const urlImg = 'https://image.tmdb.org/t/p/original/';
-
 export default function MovieDetails() {
+  //states
   const [moveInf, setMoveInf] = useState('');
-  const { movieId } = useParams();
   const [status, setStatus] = useState('idle');
-  const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/';
-  console.log('backLinkHref', backLinkHref);
-  const refLink = useRef(backLinkHref);
-  console.log('refLink', refLink);
+
+  //отримуємо параметри URL та locations
+  const { movieId } = useParams();
+  const location = useRef(useLocation().state?.from ?? '/movies');
 
   useEffect(() => {
-    axios.get(`${baseUrl}${movieId}${KEY_API}`).then(res => {
-      setMoveInf(res);
-      setStatus('pending');
-    });
+    try {
+      axios.get(`${baseUrl}${movieId}${optionMovieDetails}`).then(res => {
+        setMoveInf(res);
+        setStatus('pending');
+      });
+    } catch {
+      setStatus('error');
+    }
   }, [movieId]);
 
-  return (
-    <>
-      <Link to={refLink.current}>
-        <button> {`<`} back</button>
-      </Link>
+  if (status === 'error') {
+    return (
+      <>
+        <Link to={location.current}>
+          <button> {`<`} back</button>
+        </Link>
+        <h2> Something went wrong </h2>
+      </>
+    );
+  }
 
-      <div style={{ display: 'flex' }}>
-        {status === 'idle' ? null : (
+  if (status === 'pending') {
+    return (
+      <>
+        <Link to={location.current}>
+          <button> {`<`} back</button>
+        </Link>
+
+        <div style={{ display: 'flex' }}>
           <>
             <img
               width={220}
-              src={`${urlImg}${moveInf.data.poster_path}`}
+              src={`${baseImgURL}${moveInf.data.poster_path}`}
               alt="poster"
             />
 
@@ -51,24 +62,24 @@ export default function MovieDetails() {
               <p>{moveInf.data.genres.map(gen => "'" + gen.name + "' ")}</p>
             </div>
           </>
-        )}
-      </div>
-      <div>
-        <p>Additional information</p>
-        <ul>
-          <li>
-            <Link to="cast" movieid={movieId}>
-              Cast
-            </Link>
-          </li>
-          <li>
-            <Link to="reviews" movieid={movieId}>
-              Reviews
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <Outlet />
-    </>
-  );
+        </div>
+        <div>
+          <p>Additional information</p>
+          <ul>
+            <li>
+              <Link to="cast" movieid={movieId}>
+                Cast
+              </Link>
+            </li>
+            <li>
+              <Link to="reviews" movieid={movieId}>
+                Reviews
+              </Link>
+            </li>
+          </ul>
+          <Outlet />
+        </div>
+      </>
+    );
+  }
 }

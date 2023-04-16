@@ -1,30 +1,38 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-const baseUrl = `https://api.themoviedb.org/3/movie/`;
-const API_KEY = '85c51028d47d6f3b76fd606d9b7a0314';
-const optionURL = `/credits?api_key=${API_KEY}&language=en-US`;
-const baseImgURL = `https://image.tmdb.org/t/p/original`;
+import { baseUrl, optionURLFromCast, baseImgURL } from '../../URLs/urls';
 
 export const Cast = () => {
   const [actors, setActors] = useState([]);
   const [status, setStatus] = useState('idle');
   const { movieId } = useParams();
 
+
   useEffect(() => {
-    axios.get(`${baseUrl}${movieId}${optionURL}`).then(res => {
-      setActors(res.data.cast);
-      setStatus('pending');
-    });
+    //лише при першому рендеру робимо запит на сервер
+    try {
+      axios.get(`${baseUrl}${movieId}${optionURLFromCast}`).then(res => {
+        setActors(res.data.cast);
+        setStatus('pending');
+      });
+    } catch {
+      alert('Unknown error, please reset page');
+      setStatus('error');
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (status === 'idle') {
-    return;
-  } else {
+  //якщо зловили помилку рендерим:
+  if (status === 'error') {
+    return <h1>Unknown error, please reset page</h1>;
+  }
+  // якщо все добре рендерим:
+  if (status === 'pending') {
     return (
       <ul>
+        {/* робимо map по масиву та рендерим: */}
         {actors.map(({ id, profile_path, character, name }) => (
           <li key={id}>
             <img width={120} src={`${baseImgURL}${profile_path}`} alt="" />

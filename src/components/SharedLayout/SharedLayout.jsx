@@ -11,6 +11,7 @@ const StyledLink = styled(NavLink)`
 `;
 
 export default function SharedLayout() {
+  // повертаємо незмінну частину нашого веб-додатку
   return (
     <>
       <header>
@@ -29,7 +30,9 @@ export default function SharedLayout() {
       </header>
 
       <Suspense fallback={<div>Loading page...</div>}>
-        <Outlet />
+        <main>
+          <Outlet />
+        </main>
       </Suspense>
     </>
   );

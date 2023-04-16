@@ -1,10 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { baseUrl, optionURLfromReviews } from 'URLs';
 import axios from 'axios';
-
-const baseUrl = `https://api.themoviedb.org/3/movie/`;
-const API_KEY = '85c51028d47d6f3b76fd606d9b7a0314';
-const optionURL = `/reviews?api_key=${API_KEY}&language=en-US&page=1`;
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
@@ -12,20 +9,30 @@ export default function Reviews() {
   const { movieId } = useParams();
 
   useEffect(() => {
-    axios.get(`${baseUrl}${movieId}${optionURL}`).then(res => {
-      setReviews(res.data.results);
-      console.log(res.data.results);
-      setStatus('pending');
-    });
+    try {
+      axios.get(`${baseUrl}${movieId}${optionURLfromReviews}`).then(res => {
+        setReviews(res.data.results);
+        setStatus('pending');
+      });
+    } catch {
+      alert('Unknown error, please reset page');
+      setStatus('error');
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (status === 'idle') {
-    return;
-  } else {
+  //якщо зловили помилку рендерим:
+  if (status === 'error') {
+    return <h1>Unknown error, please reset page</h1>;
+  }
+  //якщо все добре рендерим:
+  if (status === 'pending') {
+    //якщо відсутні рецензії повідовляємо про це
     if (reviews.length === 0) {
       return <h2> Not reviews </h2>;
-    } else {
+    }
+    //в іншому випадку рендеримо рецензії
+    else {
       return (
         <ul>
           {reviews.map(({ id, author, content }) => (
