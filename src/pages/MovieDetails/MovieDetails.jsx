@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { Link, useParams, Outlet, useLocation } from 'react-router-dom';
 import { baseUrl, optionMovieDetails, baseImgURL } from 'URLs';
 import axios from 'axios';
@@ -77,7 +77,9 @@ export default function MovieDetails() {
               </Link>
             </li>
           </ul>
-          <Outlet />
+          <Suspense fallback={<div>Loading cast or reviews</div>}>
+            <Outlet />
+          </Suspense>
         </div>
       </>
     );

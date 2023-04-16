@@ -5,3 +5,4 @@ export const optionURLFromCast = `/credits?api_key=${API_KEY}&language=en-US`;
 export const optionMovieDetails = `?api_key=${API_KEY}&language=en-US`;
 export const URLFromMovieItems = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=`;
 export const optionURLfromReviews = `/reviews?api_key=${API_KEY}&language=en-US&page=1`;
+export const optionalFromTrendings = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;

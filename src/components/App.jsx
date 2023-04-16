@@ -6,7 +6,7 @@ const Trendings = lazy(() => import('pages/Trendings'));
 const Movie = lazy(() => import('pages/Movie'));
 const MovieDetails = lazy(() => import('pages/MovieDetails/MovieDetails'));
 const Cast = lazy(() => import('./Cast'));
-const Reviews = lazy(() => import('./Reviews/Reviews'));
+const Reviews = lazy(() => import('./Reviews'));
 
 export const App = () => {
   return (

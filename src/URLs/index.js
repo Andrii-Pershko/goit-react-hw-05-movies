@@ -6,4 +6,5 @@ export {
   URLFromMovieItems,
   optionURLfromReviews,
   optionMovieDetails,
+  optionalFromTrendings,
 } from './urls';

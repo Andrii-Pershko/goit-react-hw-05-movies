@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { optionalFromTrendings } from 'URLs';
 import axios from 'axios';
-
-const API_KEY = '85c51028d47d6f3b76fd606d9b7a0314';
-const baseURL = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;
 
 export default function Trendings() {
   const [movieList, setMovieList] = useState([]);
@@ -12,7 +10,7 @@ export default function Trendings() {
   useEffect(() => {
     try {
       axios
-        .get(baseURL)
+        .get(`${optionalFromTrendings}`)
         .then(dataMovies => setMovieList(dataMovies.data.results));
     } catch {
       alert('Unknown error');
